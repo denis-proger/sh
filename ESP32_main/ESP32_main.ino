@@ -211,7 +211,7 @@ void calcSetTemp(float outdoor_mediana_temp) {
   if (home_temp_for_calculate == -127) {
     home_temp_for_calculate = needHomeTemp;
   }
-  calcTemp = 28.76 - 0.1983 * 2 * ceil(outdoor_mediana_temp / 2);
+  calcTemp = 27.76 - 0.2483 * 2 * ceil(outdoor_mediana_temp / 2);
   modifikator = -1 * ceil(home_temp_for_calculate - needHomeTemp);
   if (modifikator >= 1 || modifikator <= -1) {
     setTemp = calcTemp + modifikator;
