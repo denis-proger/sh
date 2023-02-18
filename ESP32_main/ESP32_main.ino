@@ -160,11 +160,11 @@ float getMediana (float arr[], int arr_size) {
 }
 
 void calcNeedBoilerTemp() {
-  if(medOutSideDayTemp > 15) {
+  if (medOutSideDayTemp > 15) {
     need_boiler_temp = max_boiler_temp - 20;
-  } else if(medOutSideDayTemp > 10) {
+  } else if (medOutSideDayTemp > 10) {
     need_boiler_temp = max_boiler_temp - 15;
-  } else if(medOutSideDayTemp > 5) {
+  } else if (medOutSideDayTemp > 5) {
     need_boiler_temp = max_boiler_temp - 10;
   } else {
     need_boiler_temp = max_boiler_temp;
@@ -444,9 +444,9 @@ void loop() {
       need_vent = false;
     } else {
       if (medOutSideDayTemp < 15) {
-        if (home_temperature <= needHomeTemp + 0.5) {
+        if (home_temperature <= needHomeTemp + 1) {
           need_vent = false;
-        } else if (home_temperature >= (needHomeTemp + 1)) {
+        } else if (home_temperature >= (needHomeTemp + 2)) {
           need_vent = true;
         }
       } else {
@@ -495,6 +495,8 @@ void loop() {
           } else {
             digitalWrite(heat, HIGH);
           }
+        } elseif (boilerTemp < 55) {
+          digitalWrite(heat, HIGH);
         } else {
           digitalWrite(heat, LOW);
         }
@@ -541,7 +543,7 @@ void loop() {
     } else if (
       (digitalRead(pump) == LOW and stoppump == 0 and medOutSideDayTemp < 10)
       || (outside_15min_mediana_temperature < 15 and home_temperature <= needHomeTemp)
-      ) {
+    ) {
       digitalWrite(pump, HIGH); //включаем насос
       client.publish("/ESP32/DATA/LOG", "Пора топить, включаем насос.");
     } else if (home_temperature < 10) {
@@ -664,14 +666,14 @@ void loop() {
       need_vent_tualet = false;
     }
   }
-  
+
   if (need_vent_tualet == true or need_vent == true or control_need_vent == true) {
-    if(digitalRead(vent) == LOW) {
+    if (digitalRead(vent) == LOW) {
       client.publish("/ESP32/DATA/LOG", "vent_tualet ON");
     }
     digitalWrite(vent, HIGH);
   } else {
-    if(digitalRead(vent) == HIGH) {
+    if (digitalRead(vent) == HIGH) {
       client.publish("/ESP32/DATA/LOG", "vent_tualet OFF");
     }
     digitalWrite(vent, LOW);
